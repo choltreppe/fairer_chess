@@ -1,0 +1,478 @@
+@use "sass:color"
+
+$color-primary: #83B397
+$color-on-primary: black
+$color-ground: #202339
+$color-ground-var: darken($color-ground, 2%)
+$color-on-ground: white
+$color-on-ground-var: #8AA1C4
+$color-box: #34415E
+$color-board-light: #b5d2bc
+$color-board-dark: $color-primary
+$color-move-mark: $color-box
+$color-prev-pos: #6E91BF
+$color-prev-capture: #A75F7E
+$color-shadow: rgba(18, 18, 50, 0.5)
+
+@font-face
+  font-family: Ed Gothic
+  font-weight: normal
+  font-style: normal
+  src: url(/static/fonts/Ed-Gothic.otf) format(opentype)
+
+@font-face
+  font-family: digital7 mono
+  font-weight: normal
+  font-style: normal
+  src: url(/static/fonts/digital7_mono.ttf) format(truetype)
+
+
+body
+  margin: 0
+
+#ROOT
+  margin: 0
+  width: 100vw
+  min-height: 100vh
+  display: flex
+  flex-direction: column
+  align-items: stretch
+  background-color: $color-ground
+
+
+*
+  font-family: Ed Gothic
+
+a, a:visited
+  color: $color-on-ground-var
+
+$button-hpadding: 2vh
+$button-vpadding: 1.2vh
+$button-zheight: 0.6vh
+
+button, .title
+  padding: $button-vpadding $button-hpadding
+  border-radius: 1.2vh
+  font-size: 2.2vh
+  text-transform: uppercase
+
+button
+  border: none
+  background-color: $color-primary
+  box-shadow: 0 (-$button-zheight) 0.6vh $color-shadow inset, 0 0.2vh 0.2vh rgba(255, 255, 255, 0.6) inset, 0.3vh 0.6vh 1vh -0.6vh black
+  padding-bottom: $button-vpadding + $button-zheight
+  color: $color-on-primary
+
+button:hover
+  outline: 2px white solid
+
+button:active, button.pressed
+  margin-top: $button-zheight
+  padding: $button-vpadding $button-hpadding
+  padding-top: $button-vpadding + $button-zheight
+  padding-bottom: $button-vpadding - $button-zheight
+  box-shadow: 0 $button-zheight 0.6vh $color-shadow inset
+
+button:hover
+  cursor: pointer
+
+.button
+  @extend button
+
+input[type="text"], input[type="number"]
+  padding: 0.6vh
+  font-size: 1.8vh
+  background-color: $color-ground
+  box-shadow: 0.1vh 0.2vh 0.6vh -0.2vh rgba(0, 0, 0, 0.7) inset
+  color: $color-on-ground
+  border: none
+  outline: none
+
+ul
+  padding-left: 2.5vh
+
+table
+  border-spacing: 0
+
+.info-box
+  margin: 2vh 0
+  padding: 4vh
+  max-width: calc(100vw - 16vmin)
+  background-color: $color-box
+  box-shadow: 0 1vh darken($color-box, 8%), 0.5vh 2vh 2vh -1.5vh black
+  border-radius: 1.5vh
+  color: $color-on-ground
+  font-size: 2vh
+
+  h1
+    font-size: 2.2vh
+    font-weight: bold
+
+.dialog-box
+  @extend .info-box
+  display: flex
+  flex-direction: column
+  align-items: flex-end
+  padding: 1vh
+
+  > .content
+    align-self: stretch
+    padding: 2vh
+
+  > .buttons
+    display: flex
+    flex-direction: row
+
+    > :not(:first-child)
+      margin-left: 0.5vh
+
+.titled-box
+  @extend .info-box
+  display: flex
+  flex-direction: column
+  align-items: flex-start
+  padding: 1vh
+
+  > .title
+    border-top-right-radius: 0
+    border-bottom-left-radius: 0
+    background-color: $color-prev-capture
+    color: black
+    box-shadow: 0.5vh 1vh 0.5vh $color-shadow
+
+  > .content
+    padding: 2vh
+
+
+#loading
+  @each $dim in [width, height]
+    #{$dim}: 4vmin
+  background: url(/static/img/logo_mono.svg) center no-repeat
+  background-size: contain
+  animation: loading 1s linear infinite
+
+@keyframes loading
+  from
+    transform: rotate(0deg)
+  to
+    transform: rotate(360deg)
+
+
+.popup-container
+  position: fixed
+  @each $side in [top, bottom, left, right]
+    #{$side}: 0
+    background-color: rgba(0, 0, 0, 0.8)
+  display: flex
+  align-items: center
+  justify-content: center
+  z-index: 10
+
+
+#update-info
+  padding: 1.2vh
+  font-size: 1.8vh
+  background-color: $color-prev-capture
+  color: black
+  z-index: 5
+
+#header
+  display: flex
+  flex-direction: row
+  align-items: flex-start
+  justify-content: space-between
+  background-color: $color-ground-var
+  box-shadow: 0 0 2vh black
+  z-index: 4
+
+  #logo
+    width: 15vh
+    height: 6vh
+    margin: 1vh
+    background-image: url(/static/img/logo.svg)
+    background-position: center
+    background-repeat: no-repeat
+    background-size: contain
+
+  #logo:hover
+    cursor: pointer
+
+  #nav
+    align-self: center
+    display: flex
+    flex-direction: row
+    margin: 3vh
+
+    > *
+      color: $color-on-ground
+      font-size: 1.8vh
+      text-transform: uppercase
+      text-decoration: none
+
+    > :not(:first-child)
+      margin-left: 2vh
+
+    > :hover
+      $text-hover-height: 0.5vh
+      margin-top: -$text-hover-height
+      margin-bottom: $text-hover-height
+      text-shadow: 0 $text-hover-height 1vh black
+      cursor: pointer
+
+#content
+  flex: 1
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  padding: 2vmin
+
+
+#name-input
+  display: flex
+  flex-direction: row
+  align-items: center
+
+  > input[type="text"]
+    margin-left: 1vh
+
+
+#rules
+  display: flex
+  flex-direction: column
+
+  .desc
+    margin-top: 2vmin
+
+  .rule
+    display: flex
+    flex-direction: row
+    align-items: center
+    margin: 1vmin 0
+
+    > img
+      width: 30vmin
+      margin: 1vmin
+
+    > .arrow
+      width: 5vmin
+      height: 5vmin
+      background-image: url(/static/img/arrow_lr.svg)
+      background-repeat: no-repeat
+      background-size: contain
+
+
+#start-game-nav
+  display: flex
+  flex-direction: column
+  align-items: stretch
+
+  > :not(:last-child)
+    margin-bottom: 4vh
+
+  #private-game-config
+    display: flex
+    flex-direction: column
+    align-items: stretch
+
+    > div
+      display: flex
+      flex-direction: row
+      align-items: center
+      margin-bottom: 2vh
+
+      > :first-child
+        margin-right: 1vh
+
+    input[type="number"]
+      min-width: 8vh
+
+
+#game
+  display: flex
+  flex-direction: column
+  padding-bottom: 4vmin
+
+  --board-size: 64vmin
+  --board-cell-size: calc(var(--board-size) / 8)
+   
+  .piece
+    text-align: center
+    vertical-align: middle
+    font-size: 8vmin
+
+  .board:not(.cant-move) .piece:not(.opponent):hover
+    cursor: pointer
+
+  .piece::after
+    content: ""
+    display: block
+    width: 100%
+    height: 100%
+    box-sizing: border-box
+    border: calc(var(--board-cell-size) / 8) transparent solid
+    background-position: center
+    background-repeat: no-repeat
+    background-size: contain
+
+  @each $piece in [king, queen, rook, bishop, knight, pawn]
+
+    .piece:not(.opponent).#{$piece}::after
+      background-image: url(/static/img/pieces/white_#{$piece}.svg)
+
+    .piece.opponent.#{$piece}::after
+      background-image: url(/static/img/pieces/black_#{$piece}.svg)
+
+  #board
+    --board-zheight: calc(var(--board-cell-size) / 8)
+
+    width: var(--board-size)
+    height: calc(var(--board-size) + var(--board-zheight))
+    margin: 1vmin 0
+    display: flex
+    flex-direction: column
+    box-shadow: 0.5vmin 1vmin 2vmin -1vmin black
+    background-color: black
+
+    > .row
+      display: flex
+      flex-direction: row
+
+      > div
+        position: relative
+        width: var(--board-cell-size)
+        height: var(--board-cell-size)
+        padding-bottom: var(--board-zheight)
+        margin-bottom: calc(var(--board-zheight) * -1)
+        background-color: $color-board-light
+        display: flex
+        flex-direction: column
+        align-items: stretch
+
+        > .pawn-replace-select
+          position: absolute
+          left: 0
+          top: var(--board-cell-size)
+          width: var(--board-cell-size)
+          display: flex
+          flex-direction: column
+          align-items: stretch
+          background-color: white
+          box-shadow: 0 calc(var(--board-zheight) + 1vmin) 3vmin $color-shadow
+          z-index: 3
+
+          > .piece
+            height: var(--board-cell-size)
+
+      $depth-effect-shadow: 0 var(--board-zheight) $color-shadow
+
+      > div::before
+        content: ""
+        display: block
+        box-sizing: border-box
+        width: var(--board-cell-size)
+        height: var(--board-cell-size)
+        margin-top: 0
+        border: calc(var(--board-cell-size) * 0.05) transparent solid
+        margin-bottom: calc(var(--board-cell-size) * -1)
+        border-top-color: white
+        border-bottom-color: $color-shadow
+        border-right-color: transparentize($color-shadow, 0.3)
+        background-color: inherit
+        box-shadow: $depth-effect-shadow
+
+      > .move-select::before, .move-selected::before
+        box-shadow: $depth-effect-shadow, 0 0 0 calc(var(--board-cell-size) * 0.03) white inset
+
+      > .move-selected, .move-select:hover
+        margin-top: calc(var(--board-zheight) * -1)
+        margin-bottom: 0
+        box-shadow: 0 1vmin 2vmin $color-shadow
+        z-index: 3
+
+      > .piece:hover, > .move-select:hover
+        cursor: pointer
+
+      > .prev-pos
+        background-color: $color-prev-pos !important
+
+      > .prev-capture
+        background-color: $color-prev-capture !important
+
+    .row:nth-child(2n) > :nth-child(2n+1),
+    .row:nth-child(2n+1) > :nth-child(2n)
+      background-color: $color-board-dark
+
+    > .row:last-child > div
+      margin-bottom: 0
+
+  > .player-info-row
+    display: flex
+    flex-direction: row
+
+    > .player-name
+      max-width: 20vmin
+      color: $color-on-ground
+      font-size: 3vmin
+      overflow: hidden
+
+    > .captures
+      $captured-piece-size: calc(var(--board-cell-size) / 2)
+
+      height: $captured-piece-size
+      margin: 0 2vmin
+      display: flex
+      flex-direction: row
+      flex-wrap: wrap
+      flex-shrink: 1
+
+      > div
+        display: flex
+        flex-direction: row
+
+        > :not(:first-child)
+          margin-left: calc(-0.75 * #{$captured-piece-size})
+
+        > .piece
+          width:  $captured-piece-size
+          height: $captured-piece-size
+
+        > .piece:not(.opponent-capture)
+          filter: invert(1)
+
+        > .piece::after
+          border-width: 0.5vmin
+
+    > .material-advantage
+      flex: 1
+      align-self: center
+      color: $color-on-ground
+      font-size: 3vmin
+
+    > .clock
+      color: $color-on-ground
+      font-family: digital7 mono
+      font-size: 3vmin
+
+  > .player-info-row:first-child
+    align-items: flex-end
+  > .player-info-row:last-child
+    align-items: flex-start
+
+
+#resign
+  position: fixed
+  right: 1vmin
+  bottom: 1vmin
+
+
+@media only screen and (max-width: 760px)
+
+  #game
+    --board-size: 96vw
+  
+  .info-box, .titled-box, .dialog-box
+    width: 100vw
+
+  #name-input > input
+    flex: 1
