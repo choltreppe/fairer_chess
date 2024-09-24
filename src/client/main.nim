@@ -288,7 +288,7 @@ proc createDom: VNode =
               send leave
         a(href="https://chol.foo/imprint.html"):
           text "imprint"
-        a(href="https://https://github.com/choltreppe/fairer_chess"):
+        a(href="https://github.com/choltreppe/fairer_chess"):
           text "source code"
     
     tdiv(id="content"):
