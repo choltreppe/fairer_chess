@@ -21,25 +21,19 @@ proc buildClient =
 
   direShell &"nim js {extraOpts} -o:{outPath} {path}"
   if release:
-    #[direShell "uglifyjs",
-      outPath,
-      "-o", outPathMin,
-      "--compress --mangle --toplevel"]#
-    direShell "terser",
-      outPath,
-      "-o", outPathMin,
-      "-c -m"
+    direShell "closure-compiler",
+      "--js", outPath,
+      "--js_output_file", outPathMin,
+      "--assume_function_wrapper"
     direShell "mv", outPathMin, outPath
 
 proc buildServer =
-  let cmd =
-    if release: "nim musl -d:pcre -d:release"
-    else: "nim c"
-  direShell cmd,
+  direShell "nim c",
+    if release: "-d:release" else: "",
     "-o:build/server",
     "src/server/main.nim"
 
-task "build", "build website":
+task "build", "build website (debug)":
   buildStyles()
   buildClient()
   buildServer()
@@ -48,7 +42,7 @@ task "buildRelease", "build website for release":
   release = true
   runTask "build"
 
-task "run", "build and run website":
+task "run", "build and run website (debug)":
   runTask "build"
   echo "run .."
   direShell "./build/server"

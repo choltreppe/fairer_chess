@@ -152,7 +152,7 @@ proc renderRules: VNode =
           addImg('a')
   )
 
-proc render(game: var SubjGame): VNode =
+proc render(game: SubjGame): VNode =
 
   func renderCapture(pieces: array[PieceKind, Natural], player: SubjPlayer): VNode =
     buildHtml(tdiv(class="captures")):

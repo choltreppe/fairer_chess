@@ -19,7 +19,7 @@ type
     ws*: WebSocket
     matchId*: Option[string]
 
-  MatchState = enum matchWaiting, matchRunning
+  MatchState* = enum matchWaiting, matchRunning
   Match* = object
     case state*: MatchState
     of matchWaiting:

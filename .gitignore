@@ -1,0 +1,8 @@
+design
+nakefile
+*.conf
+*.sh
+build/static/*
+!build/static/img
+build/server
+.sass-cache

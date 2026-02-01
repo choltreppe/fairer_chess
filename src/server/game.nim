@@ -73,7 +73,7 @@ type
     prevMoveMarks: tuple[origins, captures: seq[Pos]]
     state: ObjGameState
 
-  SubjGame* = object
+  SubjGame* = ref object  # just a ref for simpler closure capturing on client side
     users*: array[SubjPlayer, User]
     board*: SubjBoard
     turnStartTime*: int64
