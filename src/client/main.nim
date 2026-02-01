@@ -133,6 +133,10 @@ template renderGameEndDialog(msg: string, withRematchOption = true): VNode =
 proc renderRules: VNode =
   renderTitledBox("Rules", buildHtml(tdiv(id="rules")) do:
     h1: text "Chess, but both players are on the move at the same time"
+    text "Once you have entered your move, your clock will be stopped,"
+    br()
+    text "but the move will not be executed until your opponent has also entered their move."
+    br()
     
     for (desc, imgs) in {
       "When a piece moved away it isn't captured.": @["miss", "swap"],
